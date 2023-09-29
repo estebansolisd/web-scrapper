@@ -1,0 +1,26 @@
+ {
+  "development": {
+    "username": "root",
+    "password": "root",
+    "database": "database_development",
+    "host": "postgres",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "root",
+    "password": "root",
+    "database": "database_test",
+    "host": "postgres",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "root",
+    "password": "root",
+    "database": "database_production",
+    "host": "postgres",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}

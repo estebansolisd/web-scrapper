@@ -16,10 +16,9 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route exact path="/login" element={<Login/>} />
-          <Route exact path="/register" element={<Register/>} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
           <Route
-            exact
             path="/"
             element={
               <ProtectedRoute>

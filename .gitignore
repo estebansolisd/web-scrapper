@@ -2,3 +2,4 @@ backend/node_modules
 frontend/node_modules
 server-data
 postgres-data
+.DS_Store
