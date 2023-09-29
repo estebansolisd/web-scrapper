@@ -34,20 +34,20 @@ services:
       DB_NAME: database_development
     volumes:
       - ./backend:/app
-  app:
-    container_name: app
-    build: 
-      context: ./frontend
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
-    environment:
-      - NODE_ENV=development
-    stdin_open: true
-    tty: true
-    depends_on:
-      - api
+  # app:
+  #   container_name: app
+  #   build: 
+  #     context: ./frontend
+  #   ports:
+  #     - "5173:5173"
+  #   volumes:
+  #     - ./frontend:/app
+  #   environment:
+  #     - NODE_ENV=development
+  #   stdin_open: true
+  #   tty: true
+  #   depends_on:
+  #     - api
 volumes:
   server-data:
   postgres-data:
