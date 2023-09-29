@@ -29,7 +29,7 @@ const Register = () => {
         setUser(user);
         localStorage.setItem("token", token);
         alert('Registration successful!');
-        navigate("/")
+        navigate("/websites")
       } else {
         alert('Registration failed');
       }

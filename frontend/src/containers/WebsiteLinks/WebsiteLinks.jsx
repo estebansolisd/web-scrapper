@@ -1,19 +1,27 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import "./Dashboard.css"; // Import the CSS file
+import "./WebsiteLinks.css"; // Import the CSS file
 
-const Dashboard = () => {
-  const navigate = useNavigate();
-  const { websites, createWebSites, fetchWebSites, user } = useAuth();
+const WebsiteLinks = () => {
+  const { websiteId } = useParams();
+  const { websites, fetchWebSites, user } = useAuth();
+  console.log(websites, "websites");
+  const rawWebsite = websites.find((website) => website.id === Number(websiteId)) ?? {};
+  const { WebsiteLinks = [], name = "Name not available" } = rawWebsite;
+  console.log(rawWebsite, "rawWebsite");
+  console.log(websiteId, "websiteId");
+  console.log(rawWebsite.WebsiteLinks, "rawWebsite.Websitelinks");
+
   const [currentPage, setCurrentPage] = useState(1);
-  const [url, setUrl] = useState("");
   const itemsPerPage = 10;
   const start = (currentPage - 1) * itemsPerPage;
   const end = start + itemsPerPage;
-  const currentWebSites = websites.slice(start, end);
-  const totalPages = Math.ceil(websites.length / itemsPerPage);
+  const currentWebsiteLinks = WebsiteLinks.slice(start, end);
+  const totalPages = Math.ceil(WebsiteLinks.length / itemsPerPage);
+
+  
 
   useEffect(() => {
     if (!user) return;
@@ -32,40 +40,24 @@ const Dashboard = () => {
     setCurrentPage(index + 1);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    createWebSites(url);
-    setUrl("");
-  };
-
   return (
-    <div className="dashboard-container">
-      <form onSubmit={handleSubmit} className="search-bar">
-        <input
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          type="url"
-          name="new_page"
-          id="new_page"
-        />
-        <button type="submit">Scrape</button>
-      </form>
-      <p>IMPORTANT: Some URLs may fail because of some anti scraping walls</p>
+    <div className="WebsiteLinks-container">
+      <Link to="/websites">{"< Go back"}</Link>
+      <h1 style={{ textAlign: "center"}}>{name}</h1>
       <div style={{height: 500, overflow: "auto"}}>
         <table className="data-table">
           <thead>
             <tr>
               <th>Name</th>
-              <th>Total links</th>
+              <th>Link</th>
             </tr>
           </thead>
           <tbody>
-            {currentWebSites.length ? (
-              currentWebSites.map((currentWebSite) => (
-                <tr key={currentWebSite.id} style={{cursor: "pointer"}} onClick={() => navigate(`/websites/${currentWebSite.id}`)}>
-                  <td>{currentWebSite.name}</td>
-                  <td>{currentWebSite.WebsiteLinks.length}</td>
+            {currentWebsiteLinks.length ? (
+              currentWebsiteLinks.map((websiteLink) => (
+                <tr key={websiteLink.id}>
+                  <td>{websiteLink.name}</td>
+                  <td>{websiteLink.url}</td>
                 </tr>
               ))
             ) : (
@@ -98,10 +90,11 @@ const Dashboard = () => {
           >
             Next
           </button>
+
         </div>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default WebsiteLinks;

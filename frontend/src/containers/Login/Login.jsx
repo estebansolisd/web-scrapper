@@ -28,7 +28,7 @@ const Login = () => {
         localStorage.setItem("token", token);
         setUser(user);
         alert("Login successful!");
-        navigate("/")
+        navigate("/websites")
       } else {
         alert("Login failed");
       }

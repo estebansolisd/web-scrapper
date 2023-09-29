@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
       );
 
       const newWebSites = await response.json();
-
+      console.log(newWebSites, "newwebsites");
       if (response.ok) {
         setWebsites(newWebSites);
       }
