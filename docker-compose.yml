@@ -32,7 +32,7 @@ services:
       DB_PASSWORD: root
       DB_NAME: database_development
     volumes:
-      - server-data:/app/data  
+      - ./backend:/app
   app:
     container_name: app
     build: ./frontend
