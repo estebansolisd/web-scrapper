@@ -7,12 +7,8 @@ import "./WebsiteLinks.css"; // Import the CSS file
 const WebsiteLinks = () => {
   const { websiteId } = useParams();
   const { websites, fetchWebSites, user } = useAuth();
-  console.log(websites, "websites");
   const rawWebsite = websites.find((website) => website.id === Number(websiteId)) ?? {};
   const { WebsiteLinks = [], name = "Name not available" } = rawWebsite;
-  console.log(rawWebsite, "rawWebsite");
-  console.log(websiteId, "websiteId");
-  console.log(rawWebsite.WebsiteLinks, "rawWebsite.Websitelinks");
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;

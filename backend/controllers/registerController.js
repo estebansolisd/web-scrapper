@@ -13,9 +13,7 @@ const register = async (req, res) => {
       email,
       password: hashedPassword,
     });
-    console.log(user, "user from db");
     const payload = { id: user.id };
-    console.log(payload, "payload");
     const token = jwt.sign(payload, process.env.JWT_SECRET || "JWT_SECRET", {
       expiresIn: '8h',
     });

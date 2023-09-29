@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, [])
 
-  console.log(user, "user");
 
   const fetchWebSites = async () => {
     try {
@@ -51,7 +50,6 @@ export const AuthProvider = ({ children }) => {
       );
 
       const newWebSites = await response.json();
-      console.log(newWebSites, "newwebsites");
       if (response.ok) {
         setWebsites(newWebSites);
       }
