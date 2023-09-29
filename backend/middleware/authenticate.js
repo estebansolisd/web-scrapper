@@ -6,14 +6,12 @@ const authenticate = (req, res, next) => {
   if (!token) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
-
+  
   jwt.verify(token, process.env.JWT_SECRET || 'JWT_SECRET', async (err, { id }) => {
-    console.log({err, id}, "err and id");
     if (err) {
       return res.status(403).json({ message: 'Invalid token' });
     }
-
-
+    
     const user = await User.findOne({ where: { id } });
 
     if (!user) {

@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const { WebsiteLink } = require('../models');
 
 // Endpoint to add a link for a website

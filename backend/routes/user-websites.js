@@ -1,19 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const { UserWebsite, WebsiteLink } = require('../models');
+const { getTitleFromUrl, getLinksFromUrl } = require('../utils/scrapper');
+const websiteLinksRouter = require('../routes/website-links');
+
+
+router.use('/:userId/websites/:websiteId', websiteLinksRouter);
 
 // Endpoint to add a website URL for a user
 router.post('/:userId/websites', async (req, res) => {
   try {
     const { url } = req.body;
     const { userId } = req.params;
-
+    const name = await getTitleFromUrl(url);
+    
     const userWebsite = await UserWebsite.create({
       url,
+      name,
       UserId: userId,
     });
 
-    res.json(userWebsite);
+    const linksData = await getLinksFromUrl(url, userWebsite.id);
+
+    const links = await WebsiteLink.bulkCreate(linksData)
+
+    res.json({ userWebsite, links });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
