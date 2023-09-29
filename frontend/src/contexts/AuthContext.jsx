@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
@@ -6,6 +6,36 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [websites, setWebsites] = useState([]);
   const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    
+    const fetchUser = async (token) => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API}/me`, {
+          method: "GET",
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+  
+        const { user } = await response.json();
+  
+        if (response.ok) {
+          setUser(user);
+        } 
+      } catch (error) {
+        setUser(null);
+        localStorage.removeItem("token");
+      }
+    }  
+
+    if (token && !user) {
+      fetchUser(token);
+    }
+  }, [])
+
+  console.log(user, "user");
 
   const fetchWebSites = async () => {
     try {

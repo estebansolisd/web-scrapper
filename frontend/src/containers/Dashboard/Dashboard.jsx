@@ -4,17 +4,19 @@ import { useAuth } from "../../contexts/AuthContext";
 import "./Dashboard.css"; // Import the CSS file
 
 const Dashboard = () => {
-  const { websites, createWebSites, fetchWebSites } = useAuth();
+  const { websites, createWebSites, fetchWebSites, user } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const [url, setUrl] = useState("");
   const itemsPerPage = 10;
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentWebSites = websites.slice(indexOfFirstItem, indexOfLastItem);
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const currentWebSites = websites.slice(start, end);
+  const totalPages = Math.ceil(websites.length / itemsPerPage);
 
   useEffect(() => {
+    if(!user) return;
     fetchWebSites();
-  }, []);
+  }, [user]);
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
@@ -25,7 +27,7 @@ const Dashboard = () => {
   };
 
   const handleItemClick = (index) => {
-    setCurrentPage(Math.floor(index / itemsPerPage) + 1);
+    setCurrentPage(index + 1);
   };
 
   const handleSubmit = e => {
@@ -41,6 +43,7 @@ const Dashboard = () => {
         <input value={url} onChange={e => setUrl(e.target.value)} type="url" name="new_page" id="new_page" />
         <button type="submit">Scrape</button>
       </form>
+      <p>IMPORTANT: Some URLs may fail because of some anti scraping walls</p>
       <table className="data-table">
         <thead>
           <tr>
@@ -67,17 +70,14 @@ const Dashboard = () => {
         <button onClick={handlePrevPage} disabled={currentPage === 1}>
           Previous
         </button>
-        {currentWebSites.map((item, index) => (
+        {[...Array(totalPages).keys()].map((index) => (
           <button key={index} onClick={() => handleItemClick(index)}>
             {index + 1}
           </button>
         ))}
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
         <button
           onClick={handleNextPage}
-          disabled={indexOfLastItem >= websites.length}
+          disabled={currentPage >= websites.length -1}
         >
           Next
         </button>
