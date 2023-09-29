@@ -1,6 +1,6 @@
 ## Instructions to use
 
-## Backend
+## How to run ?
 Just run `docker compose --build`
 
 ## Happy path:
