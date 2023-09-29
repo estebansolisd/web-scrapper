@@ -1,12 +1,62 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [websites, setWebsites] = useState([]);
+  const token = localStorage.getItem("token");
+
+  const fetchWebSites = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API}/users/${user.id}/websites`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const newWebSites = await response.json();
+
+      if (response.ok) {
+        setWebsites(newWebSites);
+      }
+    } catch (error) {
+      console.error(error, "protected route");
+      setWebsites([]);
+    }
+  };
+
+  const createWebSites = async (url) => {
+    try {
+      await fetch(
+        `${import.meta.env.VITE_API}/users/${user.id}/websites`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url }),
+        }
+      );
+
+      await fetchWebSites();
+
+    } catch (error) {
+      console.error(error, "protected route");
+      setWebsites([]);
+    }
+  };
+
+  
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, websites, setWebsites, createWebSites, fetchWebSites }}>
       {children}
     </AuthContext.Provider>
   );

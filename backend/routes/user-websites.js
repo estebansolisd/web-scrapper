@@ -22,9 +22,9 @@ router.post('/:userId/websites', async (req, res) => {
 
     const linksData = await getLinksFromUrl(url, userWebsite.id);
 
-    const links = await WebsiteLink.bulkCreate(linksData)
+    const WebsiteLinks = await WebsiteLink.bulkCreate(linksData)
 
-    res.json({ userWebsite, links });
+    res.json({ userWebsite, WebsiteLinks });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
